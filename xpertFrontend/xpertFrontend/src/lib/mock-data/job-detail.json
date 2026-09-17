@@ -1,0 +1,34 @@
+{
+  "id": "job-2",
+  "title": "iOS Developer",
+  "category": "Development",
+  "description": "We are seeking an iOS Developer with a minimum of 3 years of experience. The ideal candidate will possess a strong understanding of the iOS platform and its ecosystem.iOS Developer with a minimum of 3 years of experience. The ideal candidate will possess a strong understanding of the iOS platform and its ecosystem.iOS Developer with a minimum of 3 years of experience. The ideal candidate will possess a strong understanding of the iOS platform and its ecosystem.",
+  "skills": ["WebRTC", "Twilio SDK", "Mercurial or SVN"],
+  "shortListCount": 63,
+  "resumeCount": 124,
+  "analysisRatio": { "matchedPercent": 68, "rejectedPercent": 32 },
+  "createdAt": "2025-11-20T15:30:00.000Z",
+  "createdByEmail": "hr@360expertsolutions.com",
+  "criteria": [
+    {
+      "id": "crit-1",
+      "title": "2-3 years of full-time recruiting experience",
+      "ratingCalculationExplanation": "The requirement for 2-3 years of experience at a US-based recruiting firm highlights the need for a candidate with a solid background in recruitment.",
+      "idealAnswer": ""
+    },
+    {
+      "id": "crit-2",
+      "title": "Strong communication and interpersonal skills",
+      "ratingCalculationExplanation": "The ability to build rapport with candidates and clients is emphasized, making this skill critical for successful recruitment.",
+      "idealAnswer": ""
+    }
+  ],
+  "candidates": [
+    { "candidateId": "cand-1", "status": "recommended" },
+    { "candidateId": "cand-2", "status": "recommended" },
+    { "candidateId": "cand-3", "status": "recommended" },
+    { "candidateId": "cand-4", "status": "recommended" },
+    { "candidateId": "cand-5", "status": "rejected" },
+    { "candidateId": "cand-6", "status": "rejected" }
+  ]
+}

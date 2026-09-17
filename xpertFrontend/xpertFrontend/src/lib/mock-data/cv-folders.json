@@ -1,0 +1,74 @@
+[
+  {
+    "id": "folder-1",
+    "name": "Graphic Designers",
+    "fileCount": 18,
+    "createdAt": "2025-10-01T09:00:00.000Z"
+  },
+  {
+    "id": "folder-2",
+    "name": "UI/UX Designers",
+    "fileCount": 32,
+    "createdAt": "2025-10-02T09:00:00.000Z"
+  },
+  {
+    "id": "folder-3",
+    "name": "Data Analysis",
+    "fileCount": 64,
+    "createdAt": "2025-10-03T09:00:00.000Z"
+  },
+  {
+    "id": "folder-4",
+    "name": "Web Development",
+    "fileCount": 129,
+    "createdAt": "2025-10-04T09:00:00.000Z"
+  },
+  {
+    "id": "folder-5",
+    "name": "App Design Developer",
+    "fileCount": 239,
+    "createdAt": "2025-10-05T09:00:00.000Z"
+  },
+  {
+    "id": "folder-6",
+    "name": "SEP",
+    "fileCount": 51,
+    "createdAt": "2025-10-06T09:00:00.000Z"
+  },
+  {
+    "id": "folder-7",
+    "name": "Digital Marketing",
+    "fileCount": 9,
+    "createdAt": "2025-10-07T09:00:00.000Z"
+  },
+  {
+    "id": "folder-8",
+    "name": "User Research",
+    "fileCount": 18,
+    "createdAt": "2025-10-08T09:00:00.000Z"
+  },
+  {
+    "id": "folder-9",
+    "name": "AI Applications",
+    "fileCount": 41,
+    "createdAt": "2025-10-09T09:00:00.000Z"
+  },
+  {
+    "id": "folder-10",
+    "name": "Cybersecurity Measures",
+    "fileCount": 32,
+    "createdAt": "2025-10-10T09:00:00.000Z"
+  },
+  {
+    "id": "folder-11",
+    "name": "Data Science",
+    "fileCount": 64,
+    "createdAt": "2025-10-11T09:00:00.000Z"
+  },
+  {
+    "id": "folder-12",
+    "name": "DevOps",
+    "fileCount": 8,
+    "createdAt": "2025-10-12T09:00:00.000Z"
+  }
+]

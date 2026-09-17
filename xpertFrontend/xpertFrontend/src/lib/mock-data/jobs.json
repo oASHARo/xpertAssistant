@@ -1,0 +1,74 @@
+[
+  {
+    "id": "job-1",
+    "title": "AI Machine Learning",
+    "category": "AI/ML",
+    "description": "Design and build applications for the iOS platform, ensuring performance, quality, and responsiveness of applications.",
+    "skills": ["Deep Learning", "Python", "TensorFlow", "NLP"],
+    "shortListCount": 12,
+    "resumeCount": 124,
+    "analysisRatio": { "matchedPercent": 68, "rejectedPercent": 32 },
+    "createdAt": "2025-11-20T15:30:00.000Z",
+    "createdByEmail": "jobs4u.360expertsolutions.com"
+  },
+  {
+    "id": "job-2",
+    "title": "iOS Developer",
+    "category": "Development",
+    "description": "We are seeking an iOS Developer with a minimum of 3 years of experience. The ideal candidate will possess a strong understanding of the iOS platform.We are seeking an iOS Developer with a minimum of 3 years of experience. The ideal candidate will possess a strong understanding of the iOS platform.",
+    "skills": ["Swift", "WebRTC", "Twilio SDK"],
+    "shortListCount": 10,
+    "resumeCount": 63,
+    "analysisRatio": { "matchedPercent": 55, "rejectedPercent": 45 },
+    "createdAt": "2025-11-20T15:30:00.000Z",
+    "createdByEmail": "hr@360expertsolutions.com"
+  },
+  {
+    "id": "job-3",
+    "title": "AWS Full Stack Developer",
+    "category": "Development",
+    "description": "We are looking for an AWS Full Stack Developer with at least three years of experience building software solutions.",
+    "skills": ["AWS", "Node.js", "React", "TypeScript"],
+    "shortListCount": 8,
+    "resumeCount": 47,
+    "analysisRatio": { "matchedPercent": 40, "rejectedPercent": 60 },
+    "createdAt": "2025-11-20T15:30:00.000Z",
+    "createdByEmail": "alena_cordy@360expertsolutions.com"
+  },
+  {
+    "id": "job-4",
+    "title": "Senior Technical Recruiter",
+    "category": "Human Resources",
+    "description": "We are a growing recruitment firm specializing in placing top-tier technical and non-technical talent for our clients based in the United States.",
+    "skills": ["Sourcing", "ATS", "LinkedIn Recruiter"],
+    "shortListCount": 15,
+    "resumeCount": 89,
+    "analysisRatio": { "matchedPercent": 72, "rejectedPercent": 28 },
+    "createdAt": "2025-11-20T15:30:00.000Z",
+    "createdByEmail": "hr@360expertsolutions.com"
+  },
+  {
+    "id": "job-5",
+    "title": "Delivery Manager",
+    "category": "Logistics",
+    "description": "A US-based AI company that wants to create innovative commercial and research AI infrastructure is looking for a Delivery Manager.",
+    "skills": ["Agile", "Scrum", "Stakeholder Management"],
+    "shortListCount": 6,
+    "resumeCount": 34,
+    "analysisRatio": { "matchedPercent": 50, "rejectedPercent": 50 },
+    "createdAt": "2025-11-20T15:30:00.000Z",
+    "createdByEmail": "jobs4u.360expertsolutions.com"
+  },
+  {
+    "id": "job-6",
+    "title": "Data Scientist",
+    "category": "Data Science",
+    "description": "Join our data science team to build predictive models and extract actionable insights from large-scale datasets.",
+    "skills": ["Python", "SQL", "Machine Learning", "Statistics"],
+    "shortListCount": 9,
+    "resumeCount": 58,
+    "analysisRatio": { "matchedPercent": 63, "rejectedPercent": 37 },
+    "createdAt": "2025-11-19T11:15:00.000Z",
+    "createdByEmail": "jobs4u.360expertsolutions.com"
+  }
+]

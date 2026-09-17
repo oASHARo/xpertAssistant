@@ -1,0 +1,85 @@
+{
+  "recommended": [
+    {
+      "id": "cand-1",
+      "name": "Liam Smith",
+      "role": "App Developer",
+      "email": "liamsmith02@gmail.com",
+      "phone": "+14844578334",
+      "address": "123 Maple Avenue, Greenfield, New York",
+      "status": "recommended",
+      "scoreBreakdown": { "experience": 10, "skills": 9, "education": 8 },
+      "cvFileId": "file-1",
+      "cvDownloadUrl": "#",
+      "uploadedAt": "2025-11-20T15:30:00.000Z"
+    },
+    {
+      "id": "cand-2",
+      "name": "Noah Johnson",
+      "role": "App Developer",
+      "email": "noaj_joh@gmail.com",
+      "phone": "+15852095380",
+      "address": "456 Oak Street, Rivertown, New York",
+      "status": "recommended",
+      "scoreBreakdown": { "experience": 8, "skills": 12, "education": 5 },
+      "cvFileId": "file-2",
+      "cvDownloadUrl": "#",
+      "uploadedAt": "2025-11-20T15:30:00.000Z"
+    },
+    {
+      "id": "cand-3",
+      "name": "Ethan Brown",
+      "role": "App Developer",
+      "email": "ethnabrown@gmail.com",
+      "phone": "+18943512480",
+      "address": "789 Pine Lane, Lakeview, New York",
+      "status": "recommended",
+      "scoreBreakdown": { "experience": 8, "skills": 9, "education": 9 },
+      "cvFileId": "file-3",
+      "cvDownloadUrl": "#",
+      "uploadedAt": "2025-11-20T15:30:00.000Z"
+    },
+    {
+      "id": "cand-4",
+      "name": "Liam Carter",
+      "role": "App Developer",
+      "email": "limcarter02@gmail.com",
+      "phone": "+14844845836",
+      "address": "456 Maple Street, Riverbend, New York",
+      "status": "recommended",
+      "scoreBreakdown": { "experience": 10, "skills": 8, "education": 8 },
+      "cvFileId": "file-4",
+      "cvDownloadUrl": "#",
+      "uploadedAt": "2025-11-20T15:30:00.000Z"
+    }
+  ],
+  "rejected": [
+    {
+      "id": "cand-5",
+      "name": "Sophia Martinez",
+      "role": "App Developer",
+      "email": "sophia.martinez@gmail.com",
+      "phone": "+13035550123",
+      "address": "22 Birch Road, Elmhurst, New York",
+      "status": "rejected",
+      "scoreBreakdown": { "experience": 3, "skills": 4, "education": 6 },
+      "cvFileId": "file-5",
+      "cvDownloadUrl": "#",
+      "uploadedAt": "2025-11-20T15:30:00.000Z"
+    },
+    {
+      "id": "cand-6",
+      "name": "Mason Lee",
+      "role": "App Developer",
+      "email": "mason.lee@gmail.com",
+      "phone": "+12125550456",
+      "address": "9 Cedar Court, Fairview, New York",
+      "status": "rejected",
+      "scoreBreakdown": { "experience": 2, "skills": 5, "education": 4 },
+      "cvFileId": "file-6",
+      "cvDownloadUrl": "#",
+      "uploadedAt": "2025-11-20T15:30:00.000Z"
+    }
+  ],
+  "jobScore": { "matchedPercent": 68, "rejectedPercent": 32 }
+}

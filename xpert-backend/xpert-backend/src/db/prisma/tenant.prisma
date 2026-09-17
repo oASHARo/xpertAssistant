@@ -1,0 +1,331 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../../generated/tenant"
+  previewFeatures = ["views"]
+  binaryTargets   = ["native", "windows"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("TENANT_DATABASE_URL")
+}
+
+enum UserRole {
+  user
+  admin
+  moderator
+
+  @@map("user_role")
+}
+
+enum UserStatus {
+  active
+  inactive
+  suspended
+
+  @@map("user_status")
+}
+
+enum CriteriaStatus {
+  active
+  inactive
+
+  @@map("criteria_status")
+}
+
+enum OtpPurpose {
+  registration
+  password_reset
+
+  @@map("otp_purpose")
+}
+
+enum CandidateStatus {
+  recommended
+  shortlisted
+  rejected
+
+  @@map("candidate_status")
+}
+
+enum DevicePlatform {
+  android
+  web
+
+  @@map("device_platform")
+}
+
+enum AnalysisStatus {
+  pending
+  processing
+  completed
+  failed
+
+  @@map("analysis_status")
+}
+
+model User {
+  id              String          @id @default(uuid()) @db.Uuid
+  email           String          @unique @db.VarChar(320)
+  username        String          @unique @db.VarChar(255)
+  passwordHash    String          @map("password_hash") @db.VarChar(255)
+  firstName       String          @map("first_name") @db.VarChar(255)
+  lastName        String          @map("last_name") @db.VarChar(255)
+  role            UserRole        @default(user)
+  status          UserStatus      @default(active)
+  bio             String?         @db.VarChar(500)
+  profileImageUrl String?         @map("profile_image_url")
+  emailVerified   Boolean         @default(false) @map("email_verified")
+  lastLoginAt     DateTime?       @map("last_login_at") @db.Timestamptz(6)
+  loginAttempts   Int             @default(0) @map("login_attempts")
+  lockedUntil     DateTime?       @map("locked_until") @db.Timestamptz(6)
+  preferences     Json            @default("{}")
+  metadata        Json            @default("{}")
+  createdAt       DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+  deletedAt       DateTime?       @map("deleted_at") @db.Timestamptz(6)
+
+  otpCodes        OtpCode[]
+  refreshTokens   RefreshToken[]
+  devices         UserDevice[]
+  criteria        Criterion[]     @relation("CriterionCreatedBy")
+  skills          Skill[]         @relation("SkillCreatedBy")
+  jobsCreated     Job[]           @relation("JobCreatedBy")
+  jobsUpdated     Job[]           @relation("JobUpdatedBy")
+  folders         CvFolder[]      @relation("FolderCreatedBy")
+  resumes         Resume[]        @relation("ResumeCreatedBy")
+  jobResumes      JobResume[]     @relation("JobResumeCreatedBy")
+  jobResponses    JobResponse[]   @relation("JobResponseCreatedBy")
+
+  @@map("users")
+}
+
+model OtpCode {
+  id           String     @id @default(uuid()) @db.Uuid
+  userId       String     @map("user_id") @db.Uuid
+  otpHash      String     @map("otp_hash") @db.VarChar(128)
+  purpose      OtpPurpose
+  expiresAt    DateTime   @map("expires_at") @db.Timestamptz(6)
+  attemptCount Int        @default(0) @map("attempt_count")
+  used         Boolean    @default(false)
+  createdAt    DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("otp_codes")
+}
+
+model RefreshToken {
+  id         String    @id @default(uuid()) @db.Uuid
+  userId     String    @map("user_id") @db.Uuid
+  tokenHash  String    @map("token_hash") @db.VarChar(128)
+  expiresAt  DateTime  @map("expires_at") @db.Timestamptz(6)
+  revokedAt  DateTime? @map("revoked_at") @db.Timestamptz(6)
+  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}
+
+model UserDevice {
+  id        String         @id @default(uuid()) @db.Uuid
+  userId    String         @map("user_id") @db.Uuid
+  fcmToken  String         @map("fcm_token") @db.VarChar(255)
+  platform  DevicePlatform
+  deviceId  String         @map("device_id") @db.Uuid
+  createdAt DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime       @updatedAt @map("updated_at") @db.Timestamptz(6)
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, deviceId, platform])
+  @@map("user_devices")
+}
+
+model Criterion {
+  id          String         @id @default(uuid()) @db.Uuid
+  createdBy   String         @map("created_by") @db.Uuid
+  title       String         @db.VarChar(255)
+  description String
+  status      CriteriaStatus  @default(active)
+  metadata    Json           @default("{}")
+  createdAt   DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime       @updatedAt @map("updated_at") @db.Timestamptz(6)
+  deletedAt   DateTime?      @map("deleted_at") @db.Timestamptz(6)
+  creator     User           @relation("CriterionCreatedBy", fields: [createdBy], references: [id], onDelete: Cascade)
+  jobCriteria JobCriterion[]
+
+  @@map("criteria")
+}
+
+model Skill {
+  id        String      @id @default(uuid()) @db.Uuid
+  name      String      @unique @db.VarChar(50)
+  createdBy String      @map("created_by") @db.Uuid
+  createdAt DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime    @updatedAt @map("updated_at") @db.Timestamptz(6)
+  creator   User        @relation("SkillCreatedBy", fields: [createdBy], references: [id], onDelete: Cascade)
+  jobSkills JobSkill[]
+
+  @@map("skills")
+}
+
+model Job {
+  id             String          @id @default(uuid()) @db.Uuid
+  title          String          @db.VarChar(255)
+  description    String
+  category       String          @db.VarChar(100)
+  jobCode        String?         @map("job_code") @db.VarChar(50)
+  embeddedEmail  String?         @map("embedded_email") @db.VarChar(320)
+  createdBy      String          @map("created_by") @db.Uuid
+  updatedBy      String?         @map("updated_by") @db.Uuid
+  createdAt      DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+  creator        User            @relation("JobCreatedBy", fields: [createdBy], references: [id], onDelete: Cascade)
+  updater        User?           @relation("JobUpdatedBy", fields: [updatedBy], references: [id], onDelete: SetNull)
+  jobCriteria    JobCriterion[]
+  jobSkills      JobSkill[]
+  jobResumes     JobResume[]
+  jobResponses   JobResponse[]
+  analysisJobs   AnalysisJob[]
+
+  @@map("jobs")
+}
+
+model JobCriterion {
+  id         String   @id @default(uuid()) @db.Uuid
+  jobId      String   @map("job_id") @db.Uuid
+  criteriaId String   @map("criteria_id") @db.Uuid
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  job        Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  criterion  Criterion @relation(fields: [criteriaId], references: [id], onDelete: Cascade)
+
+  @@unique([jobId, criteriaId])
+  @@map("job_criteria")
+}
+
+model JobSkill {
+  id        String   @id @default(uuid()) @db.Uuid
+  jobId     String   @map("job_id") @db.Uuid
+  skillId   String   @map("skill_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  skill     Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@unique([jobId, skillId])
+  @@map("job_skills")
+}
+
+model CvFolder {
+  id        String    @id @default(uuid()) @db.Uuid
+  createdBy String    @map("created_by") @db.Uuid
+  name      String    @db.VarChar(255)
+  fileCount Int       @default(0) @map("file_count")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  creator   User      @relation("FolderCreatedBy", fields: [createdBy], references: [id], onDelete: Cascade)
+  resumes   Resume[]
+
+  @@map("cv_folders")
+}
+
+model Resume {
+  id            String     @id @default(uuid()) @db.Uuid
+  createdBy     String     @map("created_by") @db.Uuid
+  folderId      String?    @map("folder_id") @db.Uuid
+  fileName      String     @map("file_name") @db.VarChar(255)
+  fileUrl       String     @map("file_url") @db.VarChar(500)
+  fileType      String?    @map("file_type") @db.VarChar(100)
+  fileSize      String?    @map("file_size") @db.VarChar(50)
+  fileExtension String?    @map("file_extension") @db.VarChar(20)
+  storageKey    String?    @map("storage_key") @db.VarChar(255)
+  createdAt     DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime   @updatedAt @map("updated_at") @db.Timestamptz(6)
+  creator       User       @relation("ResumeCreatedBy", fields: [createdBy], references: [id], onDelete: Cascade)
+  folder        CvFolder?  @relation(fields: [folderId], references: [id], onDelete: SetNull)
+  jobResumes    JobResume[]
+  jobResponses  JobResponse[]
+  analysisJobs  AnalysisJob[]
+
+  @@map("resumes")
+}
+
+model JobResume {
+  id        String   @id @default(uuid()) @db.Uuid
+  jobId     String   @map("job_id") @db.Uuid
+  resumeId  String   @map("resume_id") @db.Uuid
+  createdBy String   @map("created_by") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  resume    Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  creator   User     @relation("JobResumeCreatedBy", fields: [createdBy], references: [id])
+
+  @@unique([jobId, resumeId])
+  @@map("job_resumes")
+}
+
+model JobResponse {
+  id              String          @id @default(uuid()) @db.Uuid
+  jobId           String          @map("job_id") @db.Uuid
+  resumeId        String          @map("resume_id") @db.Uuid
+  candidateName   String?         @map("candidate_name") @db.VarChar(255)
+  candidateEmail  String?         @map("candidate_email") @db.VarChar(255)
+  candidatePhone  String?         @map("candidate_phone") @db.VarChar(50)
+  candidateAddress String?        @map("candidate_address")
+  candidateDomain String?         @map("candidate_domain") @db.VarChar(100)
+  candidateRole   String?         @map("candidate_role") @db.VarChar(255)
+  status          CandidateStatus @default(recommended)
+  experienceScore Int?            @map("experience_score")
+  skillsScore     Int?            @map("skills_score")
+  educationScore  Int?            @map("education_score")
+  createdBy       String          @map("created_by") @db.Uuid
+  createdAt       DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+  job             Job             @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  resume          Resume          @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  creator         User            @relation("JobResponseCreatedBy", fields: [createdBy], references: [id])
+  tags            JobResponseTag[]
+
+  @@map("job_responses")
+}
+
+model JobResponseTag {
+  id            String       @id @default(uuid()) @db.Uuid
+  jobResponseId String       @map("job_response_id") @db.Uuid
+  tagName       String       @map("tag_name") @db.VarChar(100)
+  createdAt     DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime     @updatedAt @map("updated_at") @db.Timestamptz(6)
+  jobResponse   JobResponse  @relation(fields: [jobResponseId], references: [id], onDelete: Cascade)
+
+  @@map("job_response_tags")
+}
+
+model AnalysisJob {
+  id           String         @id @default(uuid()) @db.Uuid
+  jobId        String         @map("job_id") @db.Uuid
+  resumeId     String         @map("resume_id") @db.Uuid
+  status       AnalysisStatus @default(pending)
+  errorMessage String?        @map("error_message")
+  startedAt    DateTime?      @map("started_at") @db.Timestamptz(6)
+  completedAt  DateTime?      @map("completed_at") @db.Timestamptz(6)
+  attemptCount Int            @default(0) @map("attempt_count")
+  createdAt    DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime       @updatedAt @map("updated_at") @db.Timestamptz(6)
+  job          Job            @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  resume       Resume         @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  @@unique([jobId, resumeId])
+  @@map("analysis_jobs")
+}
+
+view VJobStats {
+  jobId           String @unique @map("job_id") @db.Uuid
+  resumeCount     BigInt @map("resume_count")
+  shortListCount  BigInt @map("short_list_count")
+  totalCandidates BigInt @map("total_candidates")
+  matchedPercent  Decimal @map("matched_percent") @db.Decimal(10, 2)
+  rejectedPercent Decimal @map("rejected_percent") @db.Decimal(10, 2)
+
+  @@map("v_job_stats")
+}

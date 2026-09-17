@@ -1,0 +1,38 @@
+[
+  {
+    "id": "crit-1",
+    "title": "2-3 years of full-time recruiting experience",
+    "ratingCalculationExplanation": "The requirement for 2-3 years of experience at a US-based recruiting firm highlights the need for a candidate with a solid background in recruitment.",
+    "idealAnswer": ""
+  },
+  {
+    "id": "crit-2",
+    "title": "Strong communication and interpersonal skills",
+    "ratingCalculationExplanation": "The ability to build rapport with candidates and clients is emphasized, making this skill critical for successful recruitment.",
+    "idealAnswer": ""
+  },
+  {
+    "id": "crit-3",
+    "title": "Proficiency with applicant tracking systems (ATS)",
+    "ratingCalculationExplanation": "Hands-on experience with ATS platforms indicates the candidate can manage a high-volume pipeline efficiently.",
+    "idealAnswer": ""
+  },
+  {
+    "id": "crit-4",
+    "title": "Track record of closing technical roles",
+    "ratingCalculationExplanation": "Prior success placing candidates in similar technical positions suggests domain familiarity and sourcing effectiveness.",
+    "idealAnswer": ""
+  },
+  {
+    "id": "crit-5",
+    "title": "Client relationship management experience",
+    "ratingCalculationExplanation": "Since this role interfaces directly with client hiring managers, prior account management experience is a strong signal.",
+    "idealAnswer": ""
+  },
+  {
+    "id": "crit-6",
+    "title": "Familiarity with US employment compliance",
+    "ratingCalculationExplanation": "Understanding of US-specific hiring regulations reduces onboarding time and legal risk for the firm.",
+    "idealAnswer": ""
+  }
+]

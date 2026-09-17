@@ -1,0 +1,29 @@
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../../generated/control-plane"
+  binaryTargets = ["native", "windows"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("CONTROL_PLANE_DATABASE_URL")
+}
+
+model Tenant {
+  id           String   @id @default(uuid()) @db.Uuid
+  name         String   @db.VarChar(255)
+  masterHost   String   @map("master_host") @db.VarChar(255)
+  masterPort   Int      @map("master_port")
+  replicaHost  String   @map("replica_host") @db.VarChar(255)
+  replicaPort  Int      @map("replica_port")
+  databaseName String   @map("database_name") @db.VarChar(255)
+  masterUser   String?  @map("master_user") @db.VarChar(255)
+  masterPass   String?  @map("master_pass") @db.VarChar(255)
+  replicaUser  String?  @map("replica_user") @db.VarChar(255)
+  replicaPass  String?  @map("replica_pass") @db.VarChar(255)
+  isActive     Boolean  @default(true) @map("is_active")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("tenants")
+}

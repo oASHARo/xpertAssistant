@@ -1,0 +1,101 @@
+[
+  {
+    "id": "file-1",
+    "candidateName": "Maya Johnson",
+    "fileType": "docx",
+    "fileSizeMb": 64.7,
+    "folderId": "folder-4",
+    "uploadedAt": "2025-11-20T15:30:00.000Z",
+    "downloadUrl": "#"
+  },
+  {
+    "id": "file-2",
+    "candidateName": "Liam Carter",
+    "fileType": "pdf",
+    "fileSizeMb": 128.3,
+    "folderId": "folder-4",
+    "uploadedAt": "2025-11-20T15:00:00.000Z",
+    "downloadUrl": "#"
+  },
+  {
+    "id": "file-3",
+    "candidateName": "Noah Smith",
+    "fileType": "pdf",
+    "fileSizeMb": 512.5,
+    "folderId": "folder-5",
+    "uploadedAt": "2025-11-20T14:45:00.000Z",
+    "downloadUrl": "#"
+  },
+  {
+    "id": "file-4",
+    "candidateName": "Sophie Turner",
+    "fileType": "docx",
+    "fileSizeMb": 2561.5,
+    "folderId": "folder-1",
+    "uploadedAt": "2025-11-20T14:30:00.000Z",
+    "downloadUrl": "#"
+  },
+  {
+    "id": "file-5",
+    "candidateName": "Emma Wilson",
+    "fileType": "docx",
+    "fileSizeMb": 1024.0,
+    "folderId": "folder-2",
+    "uploadedAt": "2025-11-20T14:15:00.000Z",
+    "downloadUrl": "#"
+  },
+  {
+    "id": "file-6",
+    "candidateName": "Lila Thompson",
+    "fileType": "docx",
+    "fileSizeMb": 52.3,
+    "folderId": "folder-1",
+    "uploadedAt": "2025-11-19T10:00:00.000Z",
+    "downloadUrl": "#"
+  },
+  {
+    "id": "file-7",
+    "candidateName": "Ava Taylor",
+    "fileType": "pdf",
+    "fileSizeMb": 13.9,
+    "folderId": "folder-1",
+    "uploadedAt": "2025-11-19T09:45:00.000Z",
+    "downloadUrl": "#"
+  },
+  {
+    "id": "file-8",
+    "candidateName": "Isabella Lee",
+    "fileType": "docx",
+    "fileSizeMb": 57.9,
+    "folderId": "folder-2",
+    "uploadedAt": "2025-11-19T09:30:00.000Z",
+    "downloadUrl": "#"
+  },
+  {
+    "id": "file-9",
+    "candidateName": "Mia Anderson",
+    "fileType": "pdf",
+    "fileSizeMb": 44.3,
+    "folderId": "folder-3",
+    "uploadedAt": "2025-11-19T09:15:00.000Z",
+    "downloadUrl": "#"
+  },
+  {
+    "id": "file-10",
+    "candidateName": "Zoe Thomas",
+    "fileType": "pdf",
+    "fileSizeMb": 32.5,
+    "folderId": "folder-3",
+    "uploadedAt": "2025-11-19T09:00:00.000Z",
+    "downloadUrl": "#"
+  },
+  {
+    "id": "file-11",
+    "candidateName": "Lily Jackson",
+    "fileType": "pdf",
+    "fileSizeMb": 12.0,
+    "folderId": "folder-2",
+    "uploadedAt": "2025-11-19T08:45:00.000Z",
+    "downloadUrl": "#"
+  }
+]

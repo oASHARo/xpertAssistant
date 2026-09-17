@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+
+@theme inline {
+  /* Brand Colors */
+  --color-sidebar: #00659B;
+  --color-primary: #3BAEEB;
+  --color-danger: #EA4335;
+  
+  /* Transparencies */
+  --color-danger-10: rgba(234, 67, 53, 0.10);
+  --color-white-10: rgba(255, 255, 255, 0.10);
+  --color-white-18: rgba(255, 255, 255, 0.18);
+  --color-white-26: rgba(255, 255, 255, 0.26);
+
+  /* Grays & Neutrals */
+  --color-text-main: #181818;
+  --color-text-muted: #8A8A8A;
+  --color-text-light: #989898;
+  --color-bg-main: #F0F0F0;
+  --color-bg-card: #FAFAFA;
+  --color-border-light: #E0E0E0;
+  --color-border-lighter: #E9E9E9;
+  --color-border-dark: #E6E6E6;
+
+  /* Fonts */
+  --font-red-hat-display: var(--font-red-hat-display-raw);
+}
+
+html {
+  font-size: 67%;
+}
+
+body {
+  background-color: var(--color-bg-card);
+  color: var(--color-text-main);
+  font-family: var(--font-red-hat-display), Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up-fade {
+  animation: slideUpFade 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) transparent;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary);
+  border-radius: 9999px;
+}
