@@ -8,7 +8,7 @@ export class OpenAiAdapter implements LlmClient {
     const response = await this.client.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [{ role: 'user', content: prompt }],
-      temperature: options.temperature ?? 0.2,
+      temperature: options.temperature ?? 0.0,
       max_tokens: options.maxTokens ?? 2000,
       ...(options.responseFormat === 'json' ? { response_format: { type: 'json_object' as const } } : {}),
     });

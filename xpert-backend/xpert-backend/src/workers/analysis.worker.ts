@@ -1,6 +1,6 @@
 import { controlPlanePrisma } from '../db/control-plane.js';
 import { tenantConnectionManager } from '../db/tenant-resolver/tenant-connection-manager.js';
-import { LocalDiskAdapter } from '../modules/storage/local-disk.adapter.js';
+import { storageFactory } from '../modules/storage/storage.factory.js';
 import { aiService } from '../modules/ai/ai.service.js';
 import { AnalysisJobRepository } from '../repositories/analysis-job.repository.js';
 import { JobResponseRepository } from '../repositories/job-response.repository.js';
@@ -11,20 +11,34 @@ export async function processAnalysisJobs(): Promise<void> {
   const tenants = await controlPlanePrisma.tenant.findMany({ where: { isActive: true }, select: { id: true } });
   for (const tenant of tenants) {
     const db = await tenantConnectionManager.getClient(tenant.id);
-    const jobs = await new AnalysisJobRepository(db).findPending();
-    for (const job of jobs.slice(0, 5)) {
+    const jobs = await new AnalysisJobRepository(db).acquireNextJobs(5);
+    for (const job of jobs) {
       try {
-        await new AnalysisJobRepository(db).updateStatus(job.id, 'processing');
-        const resume = await db.resume.findUniqueOrThrow({ where: { id: job.resumeId } });
-        const criteria = await db.jobCriterion.findMany({ where: { jobId: job.jobId }, include: { criterion: true } });
-        const scored = await aiService.scoreCandidate(await new LocalDiskAdapter().getBuffer(resume.storageKey ?? ''), resume.fileExtension ?? '', criteria.map(item => ({ title: item.criterion.title, description: item.criterion.description, idealAnswer: String((item.criterion.metadata as Record<string, unknown>).idealAnswer ?? '') })));
+        const resume = await db.resume.findUniqueOrThrow({ where: { id: job.resume_id } });
+        const jobDetails = await db.job.findUniqueOrThrow({ 
+          where: { id: job.job_id },
+          include: { jobSkills: { include: { skill: true } } }
+        });
+        const criteria = await db.jobCriterion.findMany({ where: { jobId: job.job_id }, include: { criterion: true } });
+        const storage = storageFactory.getProvider();
+        const scored = await aiService.scoreCandidate(
+          await storage.getBuffer(resume.storageKey ?? ''), 
+          resume.fileExtension ?? '',
+          {
+            title: jobDetails.title,
+            description: jobDetails.description,
+            skills: jobDetails.jobSkills.map(js => js.skill.name)
+          },
+          criteria.map(item => ({ title: item.criterion.title, description: item.criterion.description, idealAnswer: String((item.criterion.metadata as Record<string, unknown>).idealAnswer ?? '') }))
+        );
         const { tags, ...candidate } = scored;
-        const response = await new JobResponseRepository(db).create({ jobId: job.jobId, resumeId: job.resumeId, createdBy: resume.createdBy, ...candidate });
+        const response = await new JobResponseRepository(db).upsert({ jobId: job.job_id, resumeId: job.resume_id, createdBy: resume.createdBy, ...candidate });
         await new JobResponseRepository(db).createTags(response.id, scored.tags);
-        await new AnalysisJobRepository(db).updateStatus(job.id, 'completed');
-        eventBus.publish<AnalysisCompletedEvent>({ type: 'analysis.completed', jobId: job.jobId, resumeId: job.resumeId, userId: resume.createdBy, tenantId: tenant.id });
+        
+        await new AnalysisJobRepository(db).markCompleted(job.id);
+        eventBus.publish<AnalysisCompletedEvent>({ type: 'analysis.completed', jobId: job.job_id, resumeId: job.resume_id, userId: resume.createdBy, tenantId: tenant.id });
       } catch (error) {
-        await new AnalysisJobRepository(db).updateStatus(job.id, 'failed', error instanceof Error ? error.message : 'Analysis failed');
+        await new AnalysisJobRepository(db).markFailed(job.id, error instanceof Error ? error.message : 'Analysis failed', job.attempt_count);
       }
     }
   }

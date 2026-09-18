@@ -1,4 +1,4 @@
-export type OtpEmailPurpose = 'registration' | 'password_reset';
+export type OtpEmailPurpose = 'registration' | 'password_reset' | 'login';
 
 interface OtpEmailTemplateInput {
   otp: string;
@@ -18,9 +18,14 @@ export function otpEmailTemplate({
   otp,
   purpose,
 }: OtpEmailTemplateInput): string {
-  const instruction = purpose === 'registration'
-    ? 'Enter this code to verify your email address.'
-    : 'Enter this code to reset your XpertAssistant password.';
+  let instruction = 'Enter this code to proceed.';
+  if (purpose === 'registration') {
+    instruction = 'Enter this code to verify your email address.';
+  } else if (purpose === 'password_reset') {
+    instruction = 'Enter this code to reset your XpertAssistant password.';
+  } else if (purpose === 'login') {
+    instruction = 'Enter this code to log into your XpertAssistant account.';
+  }
 
   return `<!doctype html>
 <html lang="en">

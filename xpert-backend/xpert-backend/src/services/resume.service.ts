@@ -13,6 +13,20 @@ export class ResumeService {
     const extension = path.extname(filename).toLowerCase();
     if (!['.pdf', '.docx'].includes(extension)) throw new ValidationError('Only PDF and DOCX files are supported');
     if (folderId && !(await new CvFolderRepository(db).findById(folderId, userId))) throw new NotFoundError('Folder not found');
+    
+    // Prevent duplicate uploads in the same folder by the same user
+    const existing = await db.resume.findFirst({
+      where: {
+        createdBy: userId,
+        folderId: folderId || null,
+        fileName: filename,
+        fileSize: String(buffer.byteLength)
+      }
+    });
+    if (existing) {
+      return existing;
+    }
+
     const stored = await this.storage.save(buffer, filename);
     try {
       const resume = await new ResumeRepository(db).create({ createdBy: userId, folderId, fileName: filename, fileUrl: '', fileType: extension.slice(1), fileSize: String(buffer.byteLength), fileExtension: extension, storageKey: stored.storageKey });

@@ -11,8 +11,8 @@ export class GetJobCandidatesHandler {
   async handle(query: GetJobCandidatesQuery) {
     const jobResponses = await new JobResponseRepository(query.tenantDb).findByJobId(query.id);
 
-    const recommended: any[] = [];
-    const rejected: any[] = [];
+    const recommendedMap = new Map<string, any>();
+    const rejectedMap = new Map<string, any>();
 
     for (const r of jobResponses) {
       const c = {
@@ -32,14 +32,30 @@ export class GetJobCandidatesHandler {
         cvDownloadUrl: `/api/cvs/download/${r.resumeId}`,
         uploadedAt: (r as any).resume?.createdAt ? new Date((r as any).resume.createdAt).toISOString() : new Date(r.createdAt).toISOString()
       };
-      if (r.status === 'recommended' || r.status === 'shortlisted') recommended.push(c);
-      else rejected.push(c);
+      
+      // Deep Deduplication: Deduplicate by exact email or normalized name
+      // This catches duplicate CVs uploaded under completely different file names
+      const emailKey = c.email && c.email !== 'N/A' ? c.email.toLowerCase() : '';
+      const nameKey = c.name.toLowerCase().trim();
+      const uniqueKey = emailKey || nameKey;
+      
+      // Since results are ordered by createdAt: 'desc', the first time we see a uniqueKey, it's their NEWEST CV.
+      // We skip any older CVs so the candidate's latest upload strictly dictates their status.
+      if (recommendedMap.has(uniqueKey) || rejectedMap.has(uniqueKey)) {
+        continue;
+      }
+      
+      if (r.status === 'recommended' || r.status === 'shortlisted') {
+        recommendedMap.set(uniqueKey, c);
+      } else {
+        rejectedMap.set(uniqueKey, c);
+      }
     }
 
     const getTotalScore = (c: any) => c.scoreBreakdown.experience + c.scoreBreakdown.skills + c.scoreBreakdown.education;
     
-    recommended.sort((a, b) => getTotalScore(b) - getTotalScore(a));
-    rejected.sort((a, b) => getTotalScore(b) - getTotalScore(a));
+    const recommended = Array.from(recommendedMap.values()).sort((a, b) => getTotalScore(b) - getTotalScore(a));
+    const rejected = Array.from(rejectedMap.values()).sort((a, b) => getTotalScore(b) - getTotalScore(a));
 
     const total = recommended.length + rejected.length;
     const jobScore = {

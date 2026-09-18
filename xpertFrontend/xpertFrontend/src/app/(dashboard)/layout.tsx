@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Sidebar } from "./components/sidebar";
 import { Topbar } from "./components/topbar";
 
@@ -11,12 +12,28 @@ import { Topbar } from "./components/topbar";
  * CV Manager, Profile, etc. — matching the mockups, where the sidebar
  * never flickers or resets scroll position on navigation.
  */
+
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      router.replace("/login");
+    } else {
+      setIsAuthenticated(true);
+    }
+  }, [router]);
+
+  if (!isAuthenticated) {
+    return null; // Prevent rendering dashboard layout until verified
+  }
 
   return (
     <div className="flex h-screen gap-4 overflow-hidden bg-bg-card p-4">
